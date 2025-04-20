@@ -10,6 +10,19 @@ SPACE REPETITION system SQL PRACTICE
 
 data= {"a": [1, 2, 3], "b": [4, 5, 6]}
 
+
+st.write("""
+SQL REVISION SITE
+""")
+
+option=st.selectbox(
+    "what would like to revise ?",
+    ("join", "GroupBy", "Windows function"),
+    index=None,
+    placeholder="select theme ..."
+)
+
+st.write('you selected : ', option)
 df= pd.DataFrame(data)
 tab1,tab2,tab3 = st.tabs(["cat", "dog", "owm"])
 
