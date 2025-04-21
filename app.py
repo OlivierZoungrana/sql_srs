@@ -1,3 +1,6 @@
+import io
+from os import supports_fd
+
 import streamlit as st
 import pandas as pd
 import duckdb as db
@@ -8,28 +11,48 @@ SPACE REPETITION system SQL PRACTICE
 """
          )
 
-data = {"a": [1, 2, 3], "b": [4, 5, 6]}
+csv ="""
+beverage, price
+orange juice,2.5
+Expresso,2
+Tea,3
+"""
+beverages=pd.read_csv(io.StringIO(csv))
 
-st.write("""
-SQL REVISION SITE
-""")
-with st.sidebar:
-    option = st.selectbox(
-        "what would like to revise ?",
-        ("join", "GroupBy", "Windows function"),
-        index=None,
-        placeholder="select theme ..."
-)
+csv2 ="""
+food_item, food_price
+cookie juice,2.5
+chocolatine,2
+muffin,3
+"""
 
-st.write('you selected : ', option)
-df = pd.DataFrame(data)
-tab1, tab2, tab3 = st.tabs(["cat", "dog", "owm"])
+food_items= pd.read_csv(io.StringIO(csv2))
+
+answer="""
+SELECT * FROM beverages CROSS JOIN food_items
+"""
+
+solution = db.sql(answer).df()
 
 
-st.write('you selected : ', option)
-with tab1:
-    input_text = st.text_area(label="entrer votre input:")
-    result = db.sql(input_text)
-    st.write(result)
+st.header("Enter code")
 
-    st.write(input_text)
+query = st.text_area(label= "votre code SQL ici", key="user_input")
+
+if query:
+    result = db.sql(query).df()
+    st.dataframe(result)
+
+
+tab2,tab3=st.tabs(["Tables", "Solution"])
+
+with tab2:
+    st.write("table: beverages")
+    st.dataframe(beverages)
+    st.write("table: food_items")
+    st.dataframe(food_items)
+    st.write("expected")
+    st.dataframe(solution)
+
+with tab3:
+    st.write(answer)
