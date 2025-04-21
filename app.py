@@ -11,6 +11,14 @@ SPACE REPETITION system SQL PRACTICE
 """
          )
 
+with st.sidebar:
+    option = st.selectbox(
+        "what would like to revise ?",
+        ("join", "GroupBy", "Windows function"),
+        index=None,
+        placeholder="select theme ..."
+)
+
 csv ="""
 beverage, price
 orange juice,2.5
